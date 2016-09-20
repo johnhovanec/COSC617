@@ -1,24 +1,128 @@
 <!DOCTYPE hmtl>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="keywords" content="books">
-        <meta name="author" content="John Hovanec">
-        
-        <link rel="stylesheet" type="text/css" href="main.css" />
-        
-        <script></script>
-        
-        <title>Books & Beyond</title>
-    </head>
+<head>
+    <meta charset="utf-8" />
+    <meta name="keywords" content="books">
+    <meta name="author" content="John Hovanec">
+
+    <link rel="stylesheet" type="text/css" href="main.css" />
+
+    <script></script>
+
+    <title>The Bookshop</title>
+</head>
+
+<body>
+<!------------------------------ Top Banner ------------------------------->
+    <header>The Bookshop
+    <!------------------------------ Navigation Bar ------------------------------->
+        <nav>
+            <ul>
+                <li><a href="#">home</a></li>
+                <li><a href="#">fiction</a></li>
+                <li><a href="#">contact</a></li>
+                <li><a href="#">about</a></li>
+            </ul>
+        </nav>
+    </header>
     
-    <body>
-<!------------------------------ Top Banner ------------------------------>
-        <header>Books & Beyond</header>
-    </body>
+<!------------------------------ Sidebar ------------------------------->
+
+    
+<!------------------------------ Section Area ------------------------------->
+    <section>
+    <!------------------------------ Home Area ------------------------------->
+        <div id="home" style="display:block">
+            <h1>Home Page</h1>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum aliquam leo sed cursus finibus. Vestibulum et blandit nisi. Nam venenatis varius mauris. Ut vestibulum ante 
+            </p>
+        </div>
+    <!------------------------------ Books Area ------------------------------->
+        <div id="books" style="display:block">
+            <h1>Books Page</h1>
+            <nav>
+                <ul>
+                    <li>Fiction</li>
+                    <li>History</li>
+                    <li>Biography</li>
+                    <li>Mystery</li>
+                    <li>Art</li>
+                    <li>Music</li>
+                </ul>
+            </nav>
+            
+            <div id="bk_results">
+                <a href=""><img src="63220.jpg"/></a>
+                <div id="biblio">
+                    <ul>
+                        <li>Title: </li>
+                        <li>Author: </li>
+                        <li>Publisher: </li>
+                        <li>Price: </li>
+                    </ul>
+                </div>
+                <div id = "blurb">Ut vel convallis enim, et bibendum diam. Duis vehicula eu sapien quis commodo. In malesuada aliquam arcu, sed tempor felis dictum at. Phasellus eu enim maximus, consectetur ante id, iaculis lacus.</div>
+            </div>
+        </div>
+    <!------------------------------ Contact Area ------------------------------->
+        <div id="contact" style="display:block">
+            <h1>Contact Page</h1>
+            <p>
+                Nam venenatis varius mauris. Ut vestibulum ante id tortor bibendum volutpat. Donec iaculis vel sapien ut laoreet. Proin sit amet condimentum eros, id tempor mi.
+            </p>
+        </div>
+    <!------------------------------ About Area ------------------------------->
+        <div id="about" style="display:block">
+            <h1>About Page</h1>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum aliquam leo sed cursus finibus. Vestibulum et blandit nisi. Nam venenatis varius mauris. Ut vestibulum ante id tortor bibendum volutpat. Donec iaculis vel sapien ut laoreet. Proin sit amet condimentum eros, id tempor mi. Nam nibh sem, convallis ut porttitor at, molestie vel turpis. Vivamus at justo in libero dictum accumsan. Praesent quis lectus mi. Vestibulum odio ipsum, bibendum et pellentesque in, tempor nec libero. Cras sed enim laoreet, congue sapien vel, finibus est. Morbi ultricies massa at tortor porttitor, in consectetur ligula ullamcorper. Ut vel convallis enim, et bibendum diam. Duis vehicula eu sapien quis commodo. In malesuada aliquam arcu, sed tempor felis dictum at. Phasellus eu enim maximus, consectetur ante id, iaculis lacus.
+            </p>
+        </div>
+    </section>
+<!------------------------------ Footer ------------------------------->
+        <footer>
+            <ul>
+            <li><a href="#blog" id="ftrTerms">Join our blog</a></li>
+            <li><a href="#directions" id="ftrSite">Directions</a></li>
+            <li><a href="#contact" id="ftrContact">Contact Us</a></li>
+        </ul>
+            <p>&copy The Bookshop 2016</p>
+        </footer>
+    <script>
+        //When the DOM document is loaded in the browser
+        $(document).ready(function () {
+            //When home link is clicked show home area
+            $("#navHome").click(function (event) {
+                $("#home").show();
+                $("#menu, #about, #terms, #site, #contact").hide();
+            });
+            //When menu link is clicked show menu area
+            $("#navMenu").click(function (event) {
+                $("#menu").show();
+                $("#home, #about, #terms, #site, #contact").hide();
+            });
+            //When about link is clicked show about area
+            $("#navAbout").click(function (event) {
+                $("#about").show();
+                $("#home, #menu, #terms, #site, #contact").hide();
+            });
+            //When terms link is clicked show terms area
+            $("#ftrTerms").click(function (event) {
+                $("#terms").show();
+                $("#home, #menu, #about, #site, #contact").hide();
+            });
+            //When site link is clicked show site area
+            $("#ftrsite").click(function (event) {
+                $("#site").show();
+                $("#home, #menu, #about, #terms, #contact").hide();
+            });
+            //When contact link is clicked show contact area
+            $("#ftrContact").click(function (event) {
+                $("#contact").show();
+                $("#home, #menu, #about, #terms, #site").hide();
+            });
+        });
+    </script>
+</body>
 </html>
-
-<!------------------------------ Navigation Bar ------------------------------>
-
-
-<!------------------------------ Footer ------------------------------>

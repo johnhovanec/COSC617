@@ -1,0 +1,67 @@
+* {
+    box-sizing: border-box;
+}
+header {
+    background-color: black;
+    height: 18%;
+    color: white;
+    font-size: 3em;
+    margin: 0px;
+    padding: 0.1em;
+    vertical-align: middle;
+}
+header nav ul {
+    font-size: 0.4em;
+    background-color: none;
+    color: black;
+    list-style: none;
+    text-align: center;
+    height: 90%;
+}
+header nav li {
+    display: inline-block;
+    margin-right: 40px;
+}
+header nav a {
+    text-decoration: none;
+    color: #fff;
+}
+header nav a:hover {
+  background-color: #005f5f;
+}
+ 
+header nav a.active {
+  background-color: #fff;
+  color: #444;
+  cursor: default;
+}
+section {
+    background-color: none;
+}
+footer {
+    background-color: black;
+    height: 10%;
+    color: #fff;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 0.9em;
+    text-decoration: none;
+}
+
+[class*="col-"] {
+    float: left;
+    padding: 15px;
+    border: 10px solid red;
+}
+.col-1 {width: 8.33%;}
+.col-2 {width: 16.66%;}
+.col-3 {width: 25%;}
+.col-4 {width: 33.33%;}
+.col-5 {width: 41.66%;}
+.col-6 {width: 50%;}
+.col-7 {width: 58.33%;}
+.col-8 {width: 66.66%;}
+.col-9 {width: 75%;}
+.col-10 {width: 83.33%;}
+.col-11 {width: 91.66%;}
+.col-12 {width: 100%;}
