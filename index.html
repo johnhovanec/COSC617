@@ -7,21 +7,21 @@
 
     <link rel="stylesheet" type="text/css" href="main.css" />
 
-    <script></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
     <title>The Bookshop</title>
 </head>
 
 <body>
 <!------------------------------ Top Banner ------------------------------->
-    <header>The Bookshop
+    <header class="col-12">The Bookshop
     <!------------------------------ Navigation Bar ------------------------------->
-        <nav>
+        <nav class="col-12">
             <ul>
-                <li><a href="#">home</a></li>
-                <li><a href="#">fiction</a></li>
-                <li><a href="#">contact</a></li>
-                <li><a href="#">about</a></li>
+                <li><a href="#home" id="navHome">home</a></li>
+                <li><a href="#books" id="navBooks">books</a></li>
+                <li><a href="#contact" id="navContact">contact</a></li>
+                <li><a href="#about" id="navAbout">about</a></li>
             </ul>
         </nav>
     </header>
@@ -30,7 +30,7 @@
 
     
 <!------------------------------ Section Area ------------------------------->
-    <section>
+    <section class="col-8">
     <!------------------------------ Home Area ------------------------------->
         <div id="home" style="display:block">
             <h1>Home Page</h1>
@@ -39,7 +39,7 @@
             </p>
         </div>
     <!------------------------------ Books Area ------------------------------->
-        <div id="books" style="display:block">
+        <div id="books" style="display:none">
             <h1>Books Page</h1>
             <nav>
                 <ul>
@@ -66,14 +66,14 @@
             </div>
         </div>
     <!------------------------------ Contact Area ------------------------------->
-        <div id="contact" style="display:block">
+        <div id="contact" style="display:none">
             <h1>Contact Page</h1>
             <p>
                 Nam venenatis varius mauris. Ut vestibulum ante id tortor bibendum volutpat. Donec iaculis vel sapien ut laoreet. Proin sit amet condimentum eros, id tempor mi.
             </p>
         </div>
     <!------------------------------ About Area ------------------------------->
-        <div id="about" style="display:block">
+        <div id="about" style="display:none">
             <h1>About Page</h1>
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum aliquam leo sed cursus finibus. Vestibulum et blandit nisi. Nam venenatis varius mauris. Ut vestibulum ante id tortor bibendum volutpat. Donec iaculis vel sapien ut laoreet. Proin sit amet condimentum eros, id tempor mi. Nam nibh sem, convallis ut porttitor at, molestie vel turpis. Vivamus at justo in libero dictum accumsan. Praesent quis lectus mi. Vestibulum odio ipsum, bibendum et pellentesque in, tempor nec libero. Cras sed enim laoreet, congue sapien vel, finibus est. Morbi ultricies massa at tortor porttitor, in consectetur ligula ullamcorper. Ut vel convallis enim, et bibendum diam. Duis vehicula eu sapien quis commodo. In malesuada aliquam arcu, sed tempor felis dictum at. Phasellus eu enim maximus, consectetur ante id, iaculis lacus.
@@ -81,10 +81,10 @@
         </div>
     </section>
 <!------------------------------ Footer ------------------------------->
-        <footer>
+        <footer class="col-12">
             <ul>
             <li><a href="#blog" id="ftrTerms">Join our blog</a></li>
-            <li><a href="#directions" id="ftrSite">Directions</a></li>
+            <li><a href="#directions" id="ftrDirections">Directions</a></li>
             <li><a href="#contact" id="ftrContact">Contact Us</a></li>
         </ul>
             <p>&copy The Bookshop 2016</p>
@@ -95,22 +95,22 @@
             //When home link is clicked show home area
             $("#navHome").click(function (event) {
                 $("#home").show();
-                $("#menu, #about, #terms, #site, #contact").hide();
+                $("#books, #contact, #about, #blog").hide();
             });
             //When menu link is clicked show menu area
-            $("#navMenu").click(function (event) {
-                $("#menu").show();
-                $("#home, #about, #terms, #site, #contact").hide();
+            $("#navBooks").click(function (event) {
+                $("#books").show();
+                $("#home, #about, #contact, #blog").hide();
             });
             //When about link is clicked show about area
             $("#navAbout").click(function (event) {
                 $("#about").show();
-                $("#home, #menu, #terms, #site, #contact").hide();
+                $("#home, #books, #contact,  #blog").hide();
             });
             //When terms link is clicked show terms area
-            $("#ftrTerms").click(function (event) {
-                $("#terms").show();
-                $("#home, #menu, #about, #site, #contact").hide();
+            $("#navContact").click(function (event) {
+                $("#contact").show();
+                $("#home, #books, #about, #blog").hide();
             });
             //When site link is clicked show site area
             $("#ftrsite").click(function (event) {
