@@ -40,7 +40,7 @@ $(document).ready(function () {
     // Add new class upon btn click
     for (var i = 1; i <= numberOfBtnsTotal; i++) {
         $("#btn"+[i]).click(function onClick() {
-            if ( (counter < numberOfBtnsTotal + 2) && (win === false) ) {  // set back to numberof Btns no + 2
+            if ( (counter < numberOfBtnsTotal) && (win === false) ) {  // set back to numberof Btns no + 2
                 // Player turn X
                 if (counter % 2 === 0) {
                     $(this).val('X').addClass("on_btn");
@@ -120,7 +120,7 @@ $(document).ready(function () {
             $("#btn"+btnIdNum).addClass("win_btn");
         }
         arr = [];
-        return;
+        win = true;
     }
 
     function checkMove() {
