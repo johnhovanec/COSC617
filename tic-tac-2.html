@@ -49,18 +49,27 @@ $(document).ready(function () {
                     computerTurn();
                     checkMove();
                 }
-                // Computer turn O
                 else {
                     console.log("You shouldn't be here!");
-                    //$(this).val('O').addClass("on_btn");
                 }       
             }
             else {
+                win = true;
                 return; // Ends round
             }
-            //console.log("C = " + counter);
             counter++;
         });
+    }
+
+    // dynamically create reference matrix
+    var matrix = new Array(numberOfBtnsPerRow);
+    for (var i = 0; i < numberOfBtnsPerRow; i++) {
+      matrix[i] = new Array(numberOfBtnsPerRow);
+    }
+    for (var i = 0; i < numberOfBtnsPerRow; i++) {
+        for (var j = 0; j < numberOfBtnsPerRow; j++) {
+            matrix[i][j] = "";
+        }
     }
 
     // Add to reference matrix
@@ -179,45 +188,59 @@ $(document).ready(function () {
             oFlagVert = [];
         }
 
-        // diagonal test
-        // var xLeftDiagFlag = new Array();
-        // var xRightDiagFlag = new Array();
-        // var oLeftDiagFlag = new Array();
-        // var oRightDiagFlag = new Array();
-        // for (var i = 0; i < numberOfBtnsPerRow; i++) {
-        //     for (var j = 0; j < numberOfBtnsPerRow; j++) {
-        //         //Left diagonals
-        //         if (matrix[i][j] === 'X' && i === j) {
-        //             xLeftDiagFlag.push(i + "," + j);
-        //             console.log("xLeftDiagFlag length " + xLeftDiagFlag.length + " > [" + i + "] [" + j + "]");
-        //         }
-        //         else if (matrix[i][j] === 'O' && i === j) {
-        //             oLeftDiagFlag.push(i + "," + j);
-        //             console.log("oLeftDiagFlag length " + oLeftDiagFlag.length + " > [" + i + "] [" + j + "]");
-        //         }
+        // // diagonal test
+        var xLeftDiagFlag = new Array();
+        var xRightDiagFlag = new Array();
+        var oLeftDiagFlag = new Array();
+        var oRightDiagFlag = new Array();
+        for (var i = 0; i < numberOfBtnsPerRow; i++) {
+            for (var j = 0; j < numberOfBtnsPerRow; j++) {
+                //Left diagonals
+                if (matrix[i][j] === 'X' && i === j) {
+                    xLeftDiagFlag.push(i + "," + j);
+                    //console.log("xLeftDiagFlag length " + xLeftDiagFlag.length + " > [" + i + "] [" + j + "]");
+                }
+                else if (matrix[i][j] === 'O' && i === j) {
+                    oLeftDiagFlag.push(i + "," + j);
+                    //console.log("oLeftDiagFlag length " + oLeftDiagFlag.length + " > [" + i + "] [" + j + "]");
+                }
 
-        //         //Right diagonals
-        //         else if (matrix[i][numberOfBtnsPerRow-j] === 'X') {
-        //             xRightDiagFlag.push(i + "," + j);
-        //             console.log("xRightDiagFlag length " + xRightDiagFlag.length + " > [" + i + "] [" + j + "]");
-        //         }
-        //         else if (matrix[i][numberOfBtnsPerRow-j] === 'O') {
-        //             oRightDiagFlag.push(i + "," + j);
-        //             console.log("oRightDiagFlag length " + oRightDiagFlag.length + " > [" + i + "] [" + j + "]");
-        //         }
+                //Right diagonals
+                else if ( (matrix[i][j] === 'X') && (i + j === 3) ) {
+                    xRightDiagFlag.push(i + "," + j);
+                    console.log("xRightDiagFlag length " + xRightDiagFlag.length + " > [" + i + "] [" + j + "]");
+                }
+                else if ( (matrix[i][j] === 'O') && (i + j === 3) ) {
+                    oRightDiagFlag.push(i + "," + j);
+                    console.log("oRightDiagFlag length " + oRightDiagFlag.length + " > [" + i + "] [" + j + "]");
+                }
 
-        //     } 
-        //     if (xLeftDiagFlag.length === numberOfBtnsPerRow || xRightDiagFlag.length === numberOfBtnsPerRow) {
-        //         console.log("X Wins diagonally!");
-        //     }  
-        //     else if (oLeftDiagFlag.length === numberOfBtnsPerRow || oRightDiagFlag.length === numberOfBtnsPerRow) {
-        //         console.log("O Wins diagonally!");
-        //     }      
-        // } 
+            } 
+            if (xLeftDiagFlag.length === numberOfBtnsPerRow) {
+                console.log("X Wins diagonally left!");
+                setWinner(xLeftDiagFlag);
+            }  
+            else if (xRightDiagFlag.length === numberOfBtnsPerRow) {
+                console.log("X Wins diagonally right!");
+                setWinner(xRightDiagFlag);
+            }
+            else if (oLeftDiagFlag.length === numberOfBtnsPerRow) {
+                console.log("O Wins diagonally left!");
+                setWinner(oLeftDiagFlag);
+            }   
+            else if (oRightDiagFlag.length === numberOfBtnsPerRow) {
+                console.log("O Wins diagonally right!");
+                setWinner(oRightDiagFlag);
+            }    
+        } 
         // console.log("xLeftDiagFlag " + xLeftDiagFlag);
         // console.log("oLeftDiagFlag " + oLeftDiagFlag);
         // console.log("xRightDiagFlag" + xRightDiagFlag);
         // console.log("oRightDiagFlag" + oRightDiagFlag);
+        // xLeftDiagFlag = [];
+        // xRightDiagFlag = [];
+        // oLeftDiagFlag = [];
+        // oRightDiagFlag = [];
     }
 
     // New game call to reset btns
@@ -229,17 +252,6 @@ $(document).ready(function () {
         counter = 0;
         location.reload();
     });
-
-    // dynamically create reference matrix
-    var matrix = new Array(numberOfBtnsPerRow);
-    for (var i = 0; i < numberOfBtnsPerRow; i++) {
-      matrix[i] = new Array(numberOfBtnsPerRow);
-    }
-    for (var i = 0; i < numberOfBtnsPerRow; i++) {
-        for (var j = 0; j < numberOfBtnsPerRow; j++) {
-            matrix[i][j] = "";
-        }
-    }
 });
 </script>
 </head>
