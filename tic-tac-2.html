@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Tic Tac Toe</title>
+<style type="text/css">
+    .on_btn {
+        font-size: 50px;
+        display: inline-block;
+    }
+    .win_btn {
+        font-size: 50px;
+        color: red;
+    }
+    #XO input{
+        height: 100px;
+        width: 100px;
+        margin: 5px;
+    }
+    
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+    var counter = 0;
+    var win = false;
+    var numberOfBtnsPerRow = 4;
+    var numberOfBtnsTotal = numberOfBtnsPerRow * numberOfBtnsPerRow;    // Expand to 4 x 4
+
+    // add input btns in loop as append
+    for (var i = 1; i <= numberOfBtnsTotal; i++) {
+        var $input = "<input type=\"button\" id=\"btn"+[i]+"\" />";
+        if (i % numberOfBtnsPerRow === 0) {
+            $("#XO").append($input+"<br>");
+        }
+        else {
+            $("#XO").append($input);
+        }
+    }
+
+    // Add new class upon btn click
+    for (var i = 1; i <= numberOfBtnsTotal; i++) {
+        $("#btn"+[i]).click(function onClick() {
+            if ( (counter < numberOfBtnsTotal + 2) && (win === false) ) {  // set back to numberof Btns no + 2
+                // Player turn X
+                if (counter % 2 === 0) {
+                    $(this).val('X').addClass("on_btn");
+                    addToMatrix($(this).attr("id"), $(this).val());
+                    checkMove();
+                    computerTurn();
+                    checkMove();
+                }
+                // Computer turn O
+                else {
+                    console.log("You shouldn't be here!");
+                    //$(this).val('O').addClass("on_btn");
+                }       
+            }
+            else {
+                return; // Ends round
+            }
+            //console.log("C = " + counter);
+            counter++;
+        });
+    }
+
+    // Add to reference matrix
+    function addToMatrix(id, val) {
+        var btnNum = id.split("btn").pop();
+        var rowNum = Math.floor(btnNum/numberOfBtnsPerRow);
+        if (btnNum % numberOfBtnsPerRow === 0) {
+            rowNum = rowNum - 1;
+        }
+        //console.log("rowNum = " + rowNum);
+        var colNum = (btnNum % numberOfBtnsPerRow);
+        if ( colNum === 0 ) {
+            colNum = numberOfBtnsPerRow - 1;
+        }
+        else {
+            colNum = colNum - 1;
+        }
+        //console.log("colNum = " + colNum);
+        matrix[rowNum][colNum] = val;
+        //console.log("Matrix [" + rowNum + "][" + colNum + "] = " + matrix[rowNum][colNum]);
+        console.log(matrix);
+    }
+
+    // Get computer turn
+    function computerTurn() {
+        var flag = true;
+        var min = 0;
+        var max = numberOfBtnsPerRow;
+        while (flag) {
+            var pickRow = Math.floor(Math.random() * (max - min) + min);
+            var pickCol = Math.floor(Math.random() * (max - min) + min);
+            //console.log(" Picks = " + pickRow + " " + pickCol);
+            if (matrix[pickRow][pickCol] === "") {
+                matrix[pickRow][pickCol] = "O";
+                var btnIdNum = getBtnId(pickRow, pickCol);
+                //btnId = ("#" + btnId).toString;
+                console.log("btnIDNum " + btnIdNum);
+                $("#btn"+btnIdNum).val('O').addClass("on_btn");
+                flag = false;
+            }
+        }
+        counter++;
+    }
+
+    function getBtnId (row, col) {
+        return ((row * numberOfBtnsPerRow) + (+col + 1));
+    }
+
+    function setWinner(arr) {
+        for (var i = 0; i < arr.length; i++) {
+            var winner = arr[i];
+            var row = winner[0];
+            var col = winner[2];
+            var btnIdNum = getBtnId(row, col);
+            console.log("winner btnIDNum " + btnIdNum);
+            $("#btn"+btnIdNum).removeClass("on_btn");
+            $("#btn"+btnIdNum).addClass("win_btn");
+        }
+        arr = [];
+        return;
+    }
+
+    function checkMove() {
+        // horizontal test
+        var xFlag = new Array();
+        var oFlag = new Array();
+        for (var i = 0; i < numberOfBtnsPerRow; i++) {
+            for (var j = 0; j < numberOfBtnsPerRow; j++) {
+                if ( matrix[i][j] === "X" ) {
+                    xFlag.push(i + "," + j);
+                    //console.log("xFlag ij= " + xFlag.length + " > [" + i + "] [" + j + "]");
+                }
+                else if ( matrix[i][j] === "O" ) {
+                    oFlag.push(i + "," + j);
+                    //console.log("oFlag ij= " + oFlag.length + " > [" + i + "] [" + j + "]");
+                }
+            }
+            //console.log("row")
+            if ( xFlag.length === numberOfBtnsPerRow ) {
+                console.log("X wins horizontally: xFlag" + xFlag);
+                setWinner(xFlag);
+            }
+            else if ( oFlag.length === numberOfBtnsPerRow ) {
+                console.log("O wins horizontally: oFlag" + oFlag);
+                setWinner(oFlag);
+            }
+            xFlag = new Array();
+            oFlag = new Array();
+        }
+
+
+        // vertical test
+        var xFlagVert = new Array();
+        var oFlagVert = new Array();
+        for (var i = 0; i < numberOfBtnsPerRow; i++) {
+            for (var j = 0; j < numberOfBtnsPerRow; j++) {
+                if ( matrix[j][i] === "X" ) {
+                    xFlagVert.push(j + "," + i);
+                    //console.log("xFlagVert ji= " + xFlagVert.length + " > [" + j + "] [" + i + "]");
+                }
+                else if ( matrix[j][i] === "O" ) {
+                    oFlagVert.push(j + "," + i);
+                    //console.log("oFlagVert ji= " + oFlagVert.length + " > [" + j + "] [" + i + "]");
+                }
+            }
+            //console.log("col")
+            if ( xFlagVert.length === numberOfBtnsPerRow ) {
+                console.log("X wins vertically");
+                setWinner(xFlagVert);
+            }
+            else if ( oFlagVert.length === numberOfBtnsPerRow ) {
+                console.log("O wins vertically");
+                setWinner(oFlagVert);
+            }
+            xFlagVert = [];
+            oFlagVert = [];
+        }
+
+        // diagonal test
+        // var xLeftDiagFlag = new Array();
+        // var xRightDiagFlag = new Array();
+        // var oLeftDiagFlag = new Array();
+        // var oRightDiagFlag = new Array();
+        // for (var i = 0; i < numberOfBtnsPerRow; i++) {
+        //     for (var j = 0; j < numberOfBtnsPerRow; j++) {
+        //         //Left diagonals
+        //         if (matrix[i][j] === 'X' && i === j) {
+        //             xLeftDiagFlag.push(i + "," + j);
+        //             console.log("xLeftDiagFlag length " + xLeftDiagFlag.length + " > [" + i + "] [" + j + "]");
+        //         }
+        //         else if (matrix[i][j] === 'O' && i === j) {
+        //             oLeftDiagFlag.push(i + "," + j);
+        //             console.log("oLeftDiagFlag length " + oLeftDiagFlag.length + " > [" + i + "] [" + j + "]");
+        //         }
+
+        //         //Right diagonals
+        //         else if (matrix[i][numberOfBtnsPerRow-j] === 'X') {
+        //             xRightDiagFlag.push(i + "," + j);
+        //             console.log("xRightDiagFlag length " + xRightDiagFlag.length + " > [" + i + "] [" + j + "]");
+        //         }
+        //         else if (matrix[i][numberOfBtnsPerRow-j] === 'O') {
+        //             oRightDiagFlag.push(i + "," + j);
+        //             console.log("oRightDiagFlag length " + oRightDiagFlag.length + " > [" + i + "] [" + j + "]");
+        //         }
+
+        //     } 
+        //     if (xLeftDiagFlag.length === numberOfBtnsPerRow || xRightDiagFlag.length === numberOfBtnsPerRow) {
+        //         console.log("X Wins diagonally!");
+        //     }  
+        //     else if (oLeftDiagFlag.length === numberOfBtnsPerRow || oRightDiagFlag.length === numberOfBtnsPerRow) {
+        //         console.log("O Wins diagonally!");
+        //     }      
+        // } 
+        // console.log("xLeftDiagFlag " + xLeftDiagFlag);
+        // console.log("oLeftDiagFlag " + oLeftDiagFlag);
+        // console.log("xRightDiagFlag" + xRightDiagFlag);
+        // console.log("oRightDiagFlag" + oRightDiagFlag);
+    }
+
+    // New game call to reset btns
+    $("#btnNewGame").click(function () {
+        // for (var i = 1; i <= numberOfBtnsTotal; i++) {
+        //     $("#btn"+[i]).val('').removeClass(); // not working
+        //     counter = 0;    // reset counter
+        // }
+        counter = 0;
+        location.reload();
+    });
+
+    // dynamically create reference matrix
+    var matrix = new Array(numberOfBtnsPerRow);
+    for (var i = 0; i < numberOfBtnsPerRow; i++) {
+      matrix[i] = new Array(numberOfBtnsPerRow);
+    }
+    for (var i = 0; i < numberOfBtnsPerRow; i++) {
+        for (var j = 0; j < numberOfBtnsPerRow; j++) {
+            matrix[i][j] = "";
+        }
+    }
+});
+</script>
+</head>
+<body>
+    <div id="XO">
+    </div>
+    <input type="button" id="btnNewGame" value="New Game" />
+</body>
+</html>
