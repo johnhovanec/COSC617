@@ -37,6 +37,7 @@ $(document).ready(function () {
         }
     }
 
+
     // Add new class upon btn click
     for (var i = 1; i <= numberOfBtnsTotal; i++) {
         $("#btn"+[i]).click(function onClick() {
@@ -46,7 +47,7 @@ $(document).ready(function () {
                     $(this).val('X').addClass("on_btn");
                     addToMatrix($(this).attr("id"), $(this).val());
                     checkMove();
-                    computerTurn();
+                    computerTurn($(this).attr("id"));
                     checkMove();
                 }
                 else {
@@ -75,6 +76,8 @@ $(document).ready(function () {
     // Add to reference matrix
     function addToMatrix(id, val) {
         var btnNum = id.split("btn").pop();
+        //getMatrixAddress(id);
+        //console.log("in Add to Matrix btnNum = " + btnNum);
         var rowNum = Math.floor(btnNum/numberOfBtnsPerRow);
         if (btnNum % numberOfBtnsPerRow === 0) {
             rowNum = rowNum - 1;
@@ -87,31 +90,82 @@ $(document).ready(function () {
         else {
             colNum = colNum - 1;
         }
-        //console.log("colNum = " + colNum);
+        console.log("colNum = " + colNum);
         matrix[rowNum][colNum] = val;
         //console.log("Matrix [" + rowNum + "][" + colNum + "] = " + matrix[rowNum][colNum]);
         console.log(matrix);
     }
 
     // Get computer turn
-    function computerTurn() {
+    // function pickAMove(xFlag, xFlagVert, xLeftDiagFlag, xRightDiagFlag) {
+        
+    //     var big = new Array(xFlag.length, xFlagVert.length, xLeftDiagFlag.length, xRightDiagFlag.length);
+    //     console.log("Inside pickAMOve big = " + big );
+    //     //return big;
+    // }
+
+
+    // Get computer turn old
+    function computerTurn(x_id) {
         var flag = true;
         var min = 0;
         var max = numberOfBtnsPerRow;
         while (flag) {
-            var pickRow = Math.floor(Math.random() * (max - min) + min);
-            var pickCol = Math.floor(Math.random() * (max - min) + min);
-            //console.log(" Picks = " + pickRow + " " + pickCol);
-            if (matrix[pickRow][pickCol] === "") {
-                matrix[pickRow][pickCol] = "O";
-                var btnIdNum = getBtnId(pickRow, pickCol);
+            //Pick a move based on X
+            if (x_id) {
+                var btnNum = x_id.split("btn").pop();
+                console.log("Inside computerTurn btnNum = " + btnNum);
+                var addr = getMatrixAddress(btnNum);
+                console.log("Inside cT addr = " + addr);
+                // diag move
+                if (addr[0] === addr[2] && addr[0] < numberOfBtnsPerRow-1) {
+                    var newRow = + addr[0] + 1;
+                    var newCol = + addr[2] + 1;
+                    matrix[newRow][newCol] = "O";
+                } 
+                else if (addr[2] < numberOfBtnsPerRow-1) { // TO DO: Add some logic for other cases and when maxed on size
+                    var newRow = + addr[0];
+                    var newCol = + addr[2] + 1;
+                    matrix[newRow][newCol] = "O"; 
+                }
+                var btnIdNum = getBtnId(newRow, newCol);
                 //btnId = ("#" + btnId).toString;
                 console.log("btnIDNum " + btnIdNum);
                 $("#btn"+btnIdNum).val('O').addClass("on_btn");
                 flag = false;
             }
+            else {
+                // Pick a random
+                var pickRow = Math.floor(Math.random() * (max - min) + min);
+                var pickCol = Math.floor(Math.random() * (max - min) + min);
+                //console.log(" Picks = " + pickRow + " " + pickCol);
+                if (matrix[pickRow][pickCol] === "") {
+                    matrix[pickRow][pickCol] = "O";
+                    var btnIdNum = getBtnId(pickRow, pickCol);
+                    //btnId = ("#" + btnId).toString;
+                    console.log("btnIDNum " + btnIdNum);
+                    $("#btn"+btnIdNum).val('O').addClass("on_btn");
+                    flag = false;
+                }
+            }
         }
         counter++;
+    }
+
+    function getMatrixAddress (btn_id) {
+        var rowNum = Math.floor(btn_id/numberOfBtnsPerRow);
+        if (btn_id % numberOfBtnsPerRow === 0) {
+            rowNum = rowNum - 1;
+        }
+        //console.log("rowNum = " + rowNum);
+        var colNum = (btn_id % numberOfBtnsPerRow);
+        if ( colNum === 0 ) {
+            colNum = numberOfBtnsPerRow - 1;
+        }
+        else {
+            colNum = colNum - 1;
+        } 
+        return rowNum + "," + colNum;
     }
 
     function getBtnId (row, col) {
@@ -206,11 +260,11 @@ $(document).ready(function () {
                 }
 
                 //Right diagonals
-                else if ( (matrix[i][j] === 'X') && (i + j === 3) ) {
+                else if ( (matrix[i][j] === 'X') && (i + j === numberOfBtnsPerRow-1) ) {
                     xRightDiagFlag.push(i + "," + j);
                     console.log("xRightDiagFlag length " + xRightDiagFlag.length + " > [" + i + "] [" + j + "]");
                 }
-                else if ( (matrix[i][j] === 'O') && (i + j === 3) ) {
+                else if ( (matrix[i][j] === 'O') && (i + j === numberOfBtnsPerRow-1) ) {
                     oRightDiagFlag.push(i + "," + j);
                     console.log("oRightDiagFlag length " + oRightDiagFlag.length + " > [" + i + "] [" + j + "]");
                 }
@@ -233,6 +287,8 @@ $(document).ready(function () {
                 setWinner(oRightDiagFlag);
             }    
         } 
+        // Call to get computer's pick; pass in all of X's arrays to see which one is closest to winning
+        //pickAMove(xFlag, xFlagVert, xLeftDiagFlag, xRightDiagFlag);
         // console.log("xLeftDiagFlag " + xLeftDiagFlag);
         // console.log("oLeftDiagFlag " + oLeftDiagFlag);
         // console.log("xRightDiagFlag" + xRightDiagFlag);
