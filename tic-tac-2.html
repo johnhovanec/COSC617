@@ -5,7 +5,6 @@
 <style type="text/css">
     .on_btn {
         font-size: 50px;
-        display: inline-block;
     }
     .win_btn {
         font-size: 50px;
@@ -58,7 +57,6 @@ $(document).ready(function () {
                 win = true;
                 return; // Ends round
             }
-            //counter++;
         });
     }
 
@@ -96,33 +94,16 @@ $(document).ready(function () {
         var min = 0;
         var max = numberOfBtnsPerRow;
         while (flag) {
-            // if (x_id === "btn1" || x_id === "btn4" || x_id === "btn13" || x_id === "btn16") {
-            //     console.log("X picked a corner");
-            //     for (var i = 1; i < numberOfBtnsPerRow-1) {
-            //         if (matrix [i])
-            //     }
-            //     console.log(" Picks = " + pickRow + " " + pickCol);
-            //     if (matrix[pickRow][pickCol] === "") {
-            //         matrix[pickRow][pickCol] = "O";
-            //         var btnIdNum = getBtnId(pickRow, pickCol);
-            //         //console.log("btnIDNum " + btnIdNum);
-            //         $("#btn"+btnIdNum).val('O').addClass("on_btn");
-            //         flag = false;
-            //         counter++
-            //     }
-            // }
-            // else {
-                // Pick a random
-                var pickRow = Math.floor(Math.random() * (max - min) + min);
-                var pickCol = Math.floor(Math.random() * (max - min) + min);
-                if (matrix[pickRow][pickCol] === "") {
-                    matrix[pickRow][pickCol] = "O";
-                    var btnIdNum = getBtnId(pickRow, pickCol);
-                    $("#btn"+btnIdNum).val('O').addClass("on_btn");
-                    flag = false;
-                    counter++;
-                }
-            // }
+            // Pick a random
+            var pickRow = Math.floor(Math.random() * (max - min) + min);
+            var pickCol = Math.floor(Math.random() * (max - min) + min);
+            if (matrix[pickRow][pickCol] === "") {
+                matrix[pickRow][pickCol] = "O";
+                var btnIdNum = getBtnId(pickRow, pickCol);
+                $("#btn"+btnIdNum).val('O').addClass("on_btn");
+                flag = false;
+                counter++;
+            }
         }  
     }
 
