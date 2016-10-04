@@ -24,7 +24,7 @@ $(document).ready(function () {
     var counter = 0;
     var win = false;
     var numberOfBtnsPerRow = 4;
-    var numberOfBtnsTotal = numberOfBtnsPerRow * numberOfBtnsPerRow;    // Expand to 4 x 4
+    var numberOfBtnsTotal = numberOfBtnsPerRow * numberOfBtnsPerRow;    
 
     // add input btns in loop as append
     for (var i = 1; i <= numberOfBtnsTotal; i++) {
@@ -37,28 +37,28 @@ $(document).ready(function () {
         }
     }
 
-
     // Add new class upon btn click
     for (var i = 1; i <= numberOfBtnsTotal; i++) {
         $("#btn"+[i]).click(function onClick() {
             if ( (counter < numberOfBtnsTotal) && (win === false) ) {  // set back to numberof Btns no + 2
                 // Player turn X
-                if (counter % 2 === 0) {
+                if (counter % 2 === 0 && $(this).val() === "") {
                     $(this).val('X').addClass("on_btn");
                     addToMatrix($(this).attr("id"), $(this).val());
                     checkMove();
                     computerTurn($(this).attr("id"));
                     checkMove();
+                    counter++;
                 }
                 else {
-                    console.log("You shouldn't be here!");
+                    alert("This button has already been selected!");
                 }       
             }
             else {
                 win = true;
                 return; // Ends round
             }
-            counter++;
+            //counter++;
         });
     }
 
@@ -76,13 +76,10 @@ $(document).ready(function () {
     // Add to reference matrix
     function addToMatrix(id, val) {
         var btnNum = id.split("btn").pop();
-        //getMatrixAddress(id);
-        //console.log("in Add to Matrix btnNum = " + btnNum);
         var rowNum = Math.floor(btnNum/numberOfBtnsPerRow);
         if (btnNum % numberOfBtnsPerRow === 0) {
             rowNum = rowNum - 1;
         }
-        //console.log("rowNum = " + rowNum);
         var colNum = (btnNum % numberOfBtnsPerRow);
         if ( colNum === 0 ) {
             colNum = numberOfBtnsPerRow - 1;
@@ -90,66 +87,43 @@ $(document).ready(function () {
         else {
             colNum = colNum - 1;
         }
-        console.log("colNum = " + colNum);
         matrix[rowNum][colNum] = val;
-        //console.log("Matrix [" + rowNum + "][" + colNum + "] = " + matrix[rowNum][colNum]);
-        console.log(matrix);
     }
 
-    // Get computer turn
-    // function pickAMove(xFlag, xFlagVert, xLeftDiagFlag, xRightDiagFlag) {
-        
-    //     var big = new Array(xFlag.length, xFlagVert.length, xLeftDiagFlag.length, xRightDiagFlag.length);
-    //     console.log("Inside pickAMOve big = " + big );
-    //     //return big;
-    // }
-
-
-    // Get computer turn old
+    // Get computer turn 
     function computerTurn(x_id) {
         var flag = true;
         var min = 0;
         var max = numberOfBtnsPerRow;
         while (flag) {
-            //Pick a move based on X
-            if (x_id) {
-                var btnNum = x_id.split("btn").pop();
-                console.log("Inside computerTurn btnNum = " + btnNum);
-                var addr = getMatrixAddress(btnNum);
-                console.log("Inside cT addr = " + addr);
-                // diag move
-                if (addr[0] === addr[2] && addr[0] < numberOfBtnsPerRow-1) {
-                    var newRow = + addr[0] + 1;
-                    var newCol = + addr[2] + 1;
-                    matrix[newRow][newCol] = "O";
-                } 
-                else if (addr[2] < numberOfBtnsPerRow-1) { // TO DO: Add some logic for other cases and when maxed on size
-                    var newRow = + addr[0];
-                    var newCol = + addr[2] + 1;
-                    matrix[newRow][newCol] = "O"; 
-                }
-                var btnIdNum = getBtnId(newRow, newCol);
-                //btnId = ("#" + btnId).toString;
-                console.log("btnIDNum " + btnIdNum);
-                $("#btn"+btnIdNum).val('O').addClass("on_btn");
-                flag = false;
-            }
-            else {
+            // if (x_id === "btn1" || x_id === "btn4" || x_id === "btn13" || x_id === "btn16") {
+            //     console.log("X picked a corner");
+            //     for (var i = 1; i < numberOfBtnsPerRow-1) {
+            //         if (matrix [i])
+            //     }
+            //     console.log(" Picks = " + pickRow + " " + pickCol);
+            //     if (matrix[pickRow][pickCol] === "") {
+            //         matrix[pickRow][pickCol] = "O";
+            //         var btnIdNum = getBtnId(pickRow, pickCol);
+            //         //console.log("btnIDNum " + btnIdNum);
+            //         $("#btn"+btnIdNum).val('O').addClass("on_btn");
+            //         flag = false;
+            //         counter++
+            //     }
+            // }
+            // else {
                 // Pick a random
                 var pickRow = Math.floor(Math.random() * (max - min) + min);
                 var pickCol = Math.floor(Math.random() * (max - min) + min);
-                //console.log(" Picks = " + pickRow + " " + pickCol);
                 if (matrix[pickRow][pickCol] === "") {
                     matrix[pickRow][pickCol] = "O";
                     var btnIdNum = getBtnId(pickRow, pickCol);
-                    //btnId = ("#" + btnId).toString;
-                    console.log("btnIDNum " + btnIdNum);
                     $("#btn"+btnIdNum).val('O').addClass("on_btn");
                     flag = false;
+                    counter++;
                 }
-            }
-        }
-        counter++;
+            // }
+        }  
     }
 
     function getMatrixAddress (btn_id) {
@@ -157,7 +131,6 @@ $(document).ready(function () {
         if (btn_id % numberOfBtnsPerRow === 0) {
             rowNum = rowNum - 1;
         }
-        //console.log("rowNum = " + rowNum);
         var colNum = (btn_id % numberOfBtnsPerRow);
         if ( colNum === 0 ) {
             colNum = numberOfBtnsPerRow - 1;
@@ -178,7 +151,6 @@ $(document).ready(function () {
             var row = winner[0];
             var col = winner[2];
             var btnIdNum = getBtnId(row, col);
-            console.log("winner btnIDNum " + btnIdNum);
             $("#btn"+btnIdNum).removeClass("on_btn");
             $("#btn"+btnIdNum).addClass("win_btn");
         }
@@ -194,26 +166,20 @@ $(document).ready(function () {
             for (var j = 0; j < numberOfBtnsPerRow; j++) {
                 if ( matrix[i][j] === "X" ) {
                     xFlag.push(i + "," + j);
-                    //console.log("xFlag ij= " + xFlag.length + " > [" + i + "] [" + j + "]");
                 }
                 else if ( matrix[i][j] === "O" ) {
                     oFlag.push(i + "," + j);
-                    //console.log("oFlag ij= " + oFlag.length + " > [" + i + "] [" + j + "]");
                 }
             }
-            //console.log("row")
             if ( xFlag.length === numberOfBtnsPerRow ) {
-                console.log("X wins horizontally: xFlag" + xFlag);
                 setWinner(xFlag);
             }
             else if ( oFlag.length === numberOfBtnsPerRow ) {
-                console.log("O wins horizontally: oFlag" + oFlag);
                 setWinner(oFlag);
             }
             xFlag = new Array();
             oFlag = new Array();
         }
-
 
         // vertical test
         var xFlagVert = new Array();
@@ -222,20 +188,15 @@ $(document).ready(function () {
             for (var j = 0; j < numberOfBtnsPerRow; j++) {
                 if ( matrix[j][i] === "X" ) {
                     xFlagVert.push(j + "," + i);
-                    //console.log("xFlagVert ji= " + xFlagVert.length + " > [" + j + "] [" + i + "]");
                 }
                 else if ( matrix[j][i] === "O" ) {
                     oFlagVert.push(j + "," + i);
-                    //console.log("oFlagVert ji= " + oFlagVert.length + " > [" + j + "] [" + i + "]");
                 }
             }
-            //console.log("col")
             if ( xFlagVert.length === numberOfBtnsPerRow ) {
-                console.log("X wins vertically");
                 setWinner(xFlagVert);
             }
             else if ( oFlagVert.length === numberOfBtnsPerRow ) {
-                console.log("O wins vertically");
                 setWinner(oFlagVert);
             }
             xFlagVert = [];
@@ -252,59 +213,38 @@ $(document).ready(function () {
                 //Left diagonals
                 if (matrix[i][j] === 'X' && i === j) {
                     xLeftDiagFlag.push(i + "," + j);
-                    //console.log("xLeftDiagFlag length " + xLeftDiagFlag.length + " > [" + i + "] [" + j + "]");
                 }
                 else if (matrix[i][j] === 'O' && i === j) {
                     oLeftDiagFlag.push(i + "," + j);
-                    //console.log("oLeftDiagFlag length " + oLeftDiagFlag.length + " > [" + i + "] [" + j + "]");
                 }
 
                 //Right diagonals
                 else if ( (matrix[i][j] === 'X') && (i + j === numberOfBtnsPerRow-1) ) {
                     xRightDiagFlag.push(i + "," + j);
-                    console.log("xRightDiagFlag length " + xRightDiagFlag.length + " > [" + i + "] [" + j + "]");
                 }
                 else if ( (matrix[i][j] === 'O') && (i + j === numberOfBtnsPerRow-1) ) {
                     oRightDiagFlag.push(i + "," + j);
-                    console.log("oRightDiagFlag length " + oRightDiagFlag.length + " > [" + i + "] [" + j + "]");
                 }
 
             } 
+            // Test for winner
             if (xLeftDiagFlag.length === numberOfBtnsPerRow) {
-                console.log("X Wins diagonally left!");
                 setWinner(xLeftDiagFlag);
             }  
             else if (xRightDiagFlag.length === numberOfBtnsPerRow) {
-                console.log("X Wins diagonally right!");
                 setWinner(xRightDiagFlag);
             }
             else if (oLeftDiagFlag.length === numberOfBtnsPerRow) {
-                console.log("O Wins diagonally left!");
                 setWinner(oLeftDiagFlag);
             }   
             else if (oRightDiagFlag.length === numberOfBtnsPerRow) {
-                console.log("O Wins diagonally right!");
                 setWinner(oRightDiagFlag);
             }    
         } 
-        // Call to get computer's pick; pass in all of X's arrays to see which one is closest to winning
-        //pickAMove(xFlag, xFlagVert, xLeftDiagFlag, xRightDiagFlag);
-        // console.log("xLeftDiagFlag " + xLeftDiagFlag);
-        // console.log("oLeftDiagFlag " + oLeftDiagFlag);
-        // console.log("xRightDiagFlag" + xRightDiagFlag);
-        // console.log("oRightDiagFlag" + oRightDiagFlag);
-        // xLeftDiagFlag = [];
-        // xRightDiagFlag = [];
-        // oLeftDiagFlag = [];
-        // oRightDiagFlag = [];
     }
 
     // New game call to reset btns
     $("#btnNewGame").click(function () {
-        // for (var i = 1; i <= numberOfBtnsTotal; i++) {
-        //     $("#btn"+[i]).val('').removeClass(); // not working
-        //     counter = 0;    // reset counter
-        // }
         counter = 0;
         location.reload();
     });
